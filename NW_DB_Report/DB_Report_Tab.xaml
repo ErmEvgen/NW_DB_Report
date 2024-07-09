@@ -8,20 +8,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Autodesk.Navisworks.Gui.Roamer.AIRLook;assembly=navisworks.gui.roamer">
 
-    <RibbonTab Id="TabTest" Title="TabTest">
+    <RibbonTab Id="DB_Tab" Title="DBTest">
         <RibbonPanel x:Uid="RibbonPane1_1">
             <RibbonPanelSource x:Uid="RibbonPanelSource_RibbonPanel_1" Title="BFG 9000">
 
                 <local:NWRibbonButton x:Uid="Button_1" Id="Button_One"
                             Size="Large"
                             ShowText="True"
-                            Text="Unload Clashs"
+                            Text="DB_Report"
                             Orientation="Vertical"/>
                 <RibbonSeparator x:Uid="RibbonSeparator_1"/>
                 <local:NWRibbonButton x:Uid="Button_2" Id="Button_Two"
                             Size="Large"
                             ShowText="True"
-                            Text="Create Tests"
+                            Text="ButtonTwo"
                             Orientation="Vertical"/>
 
             </RibbonPanelSource>

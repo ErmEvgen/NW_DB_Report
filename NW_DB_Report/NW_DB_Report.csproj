@@ -105,8 +105,6 @@
     <Compile Include="01.1_ElementProperties.cs" />
     <Compile Include="01.2_NavisTest.cs" />
     <Compile Include="01.3_TestResult.cs" />
-    <Compile Include="09_DllLoader.cs" />
-    <Compile Include="09_Error.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -115,7 +113,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="CustomTabSample2.xaml">
+    <Page Include="DB_Report_Tab.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
@@ -135,4 +133,15 @@
     <None Include="Resources\cat.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+mkdir "D:\NavisPlugins\Plugins\$(TargetName)\Images"
+xcopy /Y "$(ProjectDir)Images" "D:\NavisPlugins\Plugins\$(TargetName)\Images"
+
+xcopy /Y "$(TargetDir)." "D:\NavisPlugins\Plugins\$(TargetName)"
+xcopy /Y "$(ProjectDir)DB_Report_Tab.xaml" "D:\NavisPlugins\Plugins\$(TargetName)"
+ 
+mkdir "D:\NavisPlugins\Plugins\$(TargetName)\en-US"
+xcopy /Y "$(ProjectDir)DB_Report_Tab.xaml" "D:\NavisPlugins\Plugins\$(TargetName)\en-US"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

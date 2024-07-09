@@ -62,4 +62,5 @@ namespace NW_DB_Report
             this.Tolerance = tolerance;
         }
     }
+
 }

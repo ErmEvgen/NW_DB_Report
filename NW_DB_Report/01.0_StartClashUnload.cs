@@ -13,7 +13,7 @@ using System.Windows.Controls.Primitives;
 using Autodesk.Navisworks.Api;
 using Autodesk.Navisworks.Api.Clash;
 using Autodesk.Navisworks.Api.Plugins;
-
+using Autodesk.Windows;
 using App = Autodesk.Navisworks.Api.Application;
 
 
@@ -26,8 +26,7 @@ namespace NW_DB_Report
         DocumentClash DocClash;
         SavedItemCollection Tests;
         Dictionary<string, SavedViewpoint> CheckPoints = new Dictionary<string, SavedViewpoint>();
-        Dictionary<string, int> collisionDict = new Dictionary<string, int>();
-
+        List<NavisTest> NavisTests = new List<NavisTest>();
 
         public StartClashUnload()
         {
@@ -48,24 +47,25 @@ namespace NW_DB_Report
                 }
             }
 
-
-            ActiveDoc.SavedViewpoints.CurrentSavedViewpoint = CheckPoints[MainVPName];
-
-
-            foreach (var test in Tests)
+            if (CheckPoints.ContainsKey(MainVPName))
             {
-                DocClash.TestsData.TestsClearResults((ClashTest)test);
+                ActiveDoc.SavedViewpoints.CurrentSavedViewpoint = CheckPoints[MainVPName];
+
+
+                foreach (var test in Tests)
+                {
+                    DocClash.TestsData.TestsClearResults((ClashTest)test);
+                }
+                DocClash.TestsData.TestsRunAllTests();
+
+
+                NavisTests = GetNavisTests(DocClash);
+
+
             }
-            DocClash.TestsData.TestsRunAllTests();
-
-
-            List<NavisTest> navisTests = GetNavisTests(DocClash);
-
-
-            foreach (var test in navisTests)
+            else
             {
-                var name = test.TestName;
-                collisionDict.Add(name, test.Results.Count);
+                MessageBox.Show("Нет настроенной видовой точки All", "Создайте ViewPoint \"All\"");
             }
         }
 
@@ -101,6 +101,7 @@ namespace NW_DB_Report
         }
         private static void GetIdAndType(ModelItem compositeItem, ref Guid instanceGuid, ref Guid tempGuid, out string elemId, out string type)
         {
+            var fff  = compositeItem.PropertyCategories;
             elemId = compositeItem.PropertyCategories.FindPropertyByName("LcRevitId", "LcOaNat64AttributeValue")?.Value.ToDisplayString();
             type = compositeItem.PropertyCategories.FindPropertyByDisplayName("Элемент", "Тип")?.Value.ToDisplayString();
             if (!tempGuid.Equals(instanceGuid))
@@ -110,13 +111,13 @@ namespace NW_DB_Report
             instanceGuid = compositeItem.Parent.InstanceGuid;
             if (!tempGuid.Equals(instanceGuid))
                 return;
-            type = compositeItem.Parent.Parent.PropertyCategories.FindPropertyByDisplayName("Элемент", "Тип")?.Value.ToDisplayString();
             elemId = compositeItem.Parent.Parent.PropertyCategories.FindPropertyByName("LcRevitId", "LcOaNat64AttributeValue")?.Value.ToDisplayString();
+            type = compositeItem.Parent.Parent.PropertyCategories.FindPropertyByDisplayName("Элемент", "Тип")?.Value.ToDisplayString();
             instanceGuid = compositeItem.Parent.Parent.InstanceGuid;
             if (!tempGuid.Equals(instanceGuid))
                 return;
-            type = compositeItem.Parent.Parent.Parent.PropertyCategories.FindPropertyByDisplayName("Элемент", "Тип")?.Value.ToDisplayString();
             elemId = compositeItem.Parent.Parent.Parent.PropertyCategories.FindPropertyByName("LcRevitId", "LcOaNat64AttributeValue")?.Value.ToDisplayString();
+            type = compositeItem.Parent.Parent.Parent.PropertyCategories.FindPropertyByDisplayName("Элемент", "Тип")?.Value.ToDisplayString();
         }
 
     }

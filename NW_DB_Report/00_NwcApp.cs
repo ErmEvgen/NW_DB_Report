@@ -13,11 +13,11 @@ namespace NW_DB_Report
 {
 
     // plugin constructor - custom tab attributes 
-    [Plugin("CustomTabSample222", "TwentyTwo222", DisplayName = "CustomTabSample2222")]
+    [Plugin("NW_DB_Report", "BIM", DisplayName = "NW_DB_Report")]
     // xaml file - layout of custom ribbon (panel & buttons) 
-    [RibbonLayout("CustomTabSample2.xaml")]
+    [RibbonLayout("DB_Report_Tab.xaml")]
     // ribbon tab ID from xaml file
-    [RibbonTab("TabTest")]
+    [RibbonTab("DB_Tab")]
     // ribbon button ID & icon files
     [Command("Button_One", ToolTip = "Выгрузка отчетов в Excel", ExtendedToolTip = "Пока не фига не работает", Icon = "1_16.png", LargeIcon = "cat.png")]
 
@@ -28,8 +28,6 @@ namespace NW_DB_Report
     {
         public override int ExecuteCommand(string name, params string[] parameters)
         {
-
-            new DllLoader();
 
             switch (name)
             {
